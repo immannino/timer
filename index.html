@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="">
+    <meta property="og:site_name" content="timer">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="https://timer.spaghet.me">
+    <meta name="twitter:site" content="https://timer.spaghet.me">
+    <meta data-hid="title" name="title" content="timer | spaghet">
+    <meta data-hid="description" name="description" content="Simple timer in the web">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="timer | spaghet">
+    <meta property="og:description" content="Simple timer">
+    <meta property="og:image" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="timer | spaghet">
+    <meta name="twitter:description" content="Simple timer">
+    <meta name="twitter:image" content="">
+    <meta name="twitter:image:alt" content="">
+    <title>timer | spaghet</title>
+
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <nav>
+            <h1>timer</h1>
+            <a @click="allowSound = !allowSound" class="sound-indicator" title="Toggle if you want sound to play.">
+                <img src="assets/volume-up-solid.svg" alt="Sound Playing indicator" v-if="allowSound">
+                <img src="assets/volume-mute-solid.svg" alt="Sound Playing indicator" v-else>
+            </a>
+        </nav>
+
+        <div class="timer" v-if="isTimerActive">
+            <div class="time" v-if="timerMeta.prettyTime">{{timerMeta.prettyTime}}</div>
+            <div class="actions" v-if="isTimerEnded">
+                <button class="danger" style="background-color: red;" @click="cancel()">STOP</button>
+                <button class="cancel" @click="repeatTimer()">REPEAT</button>
+            </div>
+            <div class="actions" v-else>
+                <button @click="playPause()">{{timerStateText}}</button>
+                <button class="cancel" @click="cancel()">CANCEL</button>
+            </div>
+        </div>
+        <div class="timer-form" v-else>
+            <h3>{{activeForm}}</h3>
+            <div class="inputs">
+                <input type="number" ref="hours"   name="Hours"   id="Hours"   placeholder="hh" v-model="form.hours"   @focus="activeForm = 'HOURS'"   @input="formatMaxLength('hours', 2)" maxlength="2" min="0" max="24">
+                <input type="number" ref="minutes" name="Minutes" id="Minutes" placeholder="mm" v-model="form.minutes" @focus="activeForm = 'MINUTES'" @input="formatMaxLength('minutes', 3)" maxlength="3" min="0" max="120">
+                <input type="number" ref="seconds" name="Seconds" id="Seconds" placeholder="ss" v-model="form.seconds" @focus="activeForm = 'SECONDS'" @input="formatMaxLength('seconds', 3)" maxlength="3" min="0" max="180">
+            </div>
+            <button @click="createTimer()" :disabled="!isFormValid">START</button>
+        </div>
+
+        <div class="quick-timers" v-if="!isTimerActive">
+            <button @click="quickTimer(0,0,30);">30 Seconds</button>
+            <button @click="quickTimer(0,1,0);">1 Minute</button>
+            <button @click="quickTimer(0,3,0);">3 Minutes</button>
+            <button @click="quickTimer(0,5,0);">5 Minutes</button>
+            <button @click="quickTimer(0,10,0);">10 Minutes</button>
+            <button @click="quickTimer(0,15,0);">15 Minutes</button>
+            <button @click="quickTimer(0,30,0);">30 Minutes</button>
+            <button @click="quickTimer(1,0,0);">1 Hour</button>
+        </div>
+        <audio src="assets/alarm.mp3" ref="audio"></audio>
+    </div>
+    <script src="script.js">
+        /*
+        TODO:
+        - Styling
+            - make it look pretty
+            - favicon
+            - notification icon
+            - branding
+            - colors
+            - sex
+        - deploy
+            - gh pages, Domains add new sub domain for timer.spaghet.me
+        - theming
+        - persistence
+            - Allow users to refresh and keep their timers.
+            - Keep track of users past timers.
+
+        Done:
+        - Notifications
+        - Handle timer end.
+        - Play / Pause functionality
+        - Alerting ^ - Sounds and stuff or something.
+            - add music or some shit
+        */
+    </script>
+    <script>
+        window.onload = () => {
+            if (Notification.permission !== "denied" && Notification.permission !== 'granted') {
+                Notification.requestPermission().then(function (permission) {
+                    console.log('%cThank you for allowing notifications.', 'font-size: 20px;background: blue; color: white;');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
