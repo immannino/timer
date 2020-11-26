@@ -86,8 +86,13 @@ new Vue({
             };
         },
         notify() {
-            var notification = new Notification('Timer Done');
-            document.title = 'TIMER ENDED | spaghet';
+            try {
+                var notification = new Notification('Timer Done');
+                document.title = 'TIMER ENDED | spaghet';
+            } catch (err) {
+                console.log('Noficications not supported');
+                window.alert('TIMER ENDED');
+            }
 
             if (this.allowSound) {
                 this.$refs.audio.play();

@@ -36,7 +36,7 @@ h1 {
     background: red;
     background: var(--danger-color, red);
     color: white;
-    color: var(--danger-color, white);
+    color: var(--danger-text, white);
 }
 
 .cancel {
