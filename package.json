@@ -1,0 +1,24 @@
+{
+  "name": "timer",
+  "version": "1.0.0",
+  "description": "This is a simple timer site.",
+  "main": "script.js",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/immannino/timer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/immannino/timer/issues"
+  },
+  "homepage": "https://github.com/immannino/timer#readme",
+  "dependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}

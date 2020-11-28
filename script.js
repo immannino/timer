@@ -12,13 +12,14 @@ new Vue({
             duration: 0,
             elapsed: 0,
             endTime: 0,
+            prettyEndTime: null,
             timeLeft: 0,
             prettyTime: null,
             hours: 0,
             minutes: 0,
-            seconds: 0
+            seconds: 0,
         },
-        tickRate: 1,
+        tickRate: 50,
         isTimerActive: false,
         isPaused: false,
         isTimerEnded: false,
@@ -31,19 +32,30 @@ new Vue({
     computed: {
         isFormValid() {
             return this.form.hours > 0 || this.form.minutes > 0 || this.form.seconds > 0;
+        },
+        formEndTime() {
+            if (this.isFormValid) {
+                const endDate = this.calculateEndTime(this.form.hours, this.form.minutes, this.form.seconds);
+
+                console.log(endDate.toLocaleString());
+                return endDate.toLocaleTimeString();
+            } else {
+                return null;
+            }
         }
     },
     methods: {
         createTimer() {
             if (this.isFormValid) {
-                const durationSeconds = (this.form.hours * 60 * 60) + (this.form.minutes * 60) + (this.form.seconds);
+                const durationMS = (this.form.hours * 60 * 60 * 1000) + (this.form.minutes * 60 * 1000) + (this.form.seconds * 1000);
 
                 this.timerMeta = {
                     ...this.timerMeta,
-                    duration: (durationSeconds * 1000),
+                    duration: durationMS,
                     hours: this.form.hours,
                     minutes: this.form.minutes,
-                    seconds: this.form.seconds
+                    seconds: this.form.seconds,
+                    prettyEndTime: this.calculateEndTime(this.form.hours, this.form.minutes, this.form.seconds)
                 }
 
                 this.timerMeta.endTime = Date.now() + this.timerMeta.duration;
@@ -154,6 +166,10 @@ new Vue({
             if (this.form[field].length > max) {
                 this.form[field] = Number(String(this.form[field]).slice(0, max))
             }
+        },
+        calculateEndTime(hh, mm, ss) {
+            const durMS = (hh * 60 * 60 * 1000) + (mm * 60 * 1000) + (ss * 100);
+            return new Date((Date.now() + durMS));
         },
         pastTimers() {
             // @TODO

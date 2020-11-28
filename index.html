@@ -4,26 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="">
+    <meta name="title" content="timer | spaghet">
     <meta property="og:site_name" content="timer">
     <meta property="og:locale" content="en_US">
     <meta property="og:url" content="https://timer.spaghet.me">
     <meta name="twitter:site" content="https://timer.spaghet.me">
     <meta data-hid="title" name="title" content="timer | spaghet">
-    <meta data-hid="description" name="description" content="Simple timer in the web">
+    <meta data-hid="description" name="description" content="A simple count down timer.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="timer | spaghet">
-    <meta property="og:description" content="Simple timer">
-    <meta property="og:image" content="">
+    <meta property="og:description" content="A simple count down timer.">
+    <meta property="og:image" content="assets/Logo.png">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="timer | spaghet">
-    <meta name="twitter:description" content="Simple timer">
-    <meta name="twitter:image" content="">
-    <meta name="twitter:image:alt" content="">
+    <meta name="twitter:description" content="A simple count down timer.">
+    <meta name="twitter:image" content="assets/Logo.png">
+    <meta name="twitter:image:alt" content="Timer logo">
     <title>timer | spaghet</title>
 
     <script src="https://unpkg.com/vue"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/Logo.svg" type="image/x-icon">
 </head>
 <body>
     <div id="app">
@@ -45,6 +46,7 @@
                 <button @click="playPause()">{{timerStateText}}</button>
                 <button class="cancel" @click="cancel()">CANCEL</button>
             </div>
+            <div class="end-time" v-if="timerMeta.prettyEndTime">Timer Ends at <code>{{timerMeta.prettyEndTime.toLocaleTimeString()}}</code></div>
         </div>
         <div class="timer-form" v-else>
             <h3>{{activeForm}}</h3>
@@ -54,6 +56,7 @@
                 <input type="number" ref="seconds" name="Seconds" id="Seconds" placeholder="ss" v-model="form.seconds" @focus="activeForm = 'SECONDS'" @input="formatMaxLength('seconds', 3)" maxlength="3" min="0" max="180">
             </div>
             <button @click="createTimer()" :disabled="!isFormValid">START</button>
+            <div class="end-time" v-if="formEndTime">Timer ends at <code>{{formEndTime}}</code></div>
         </div>
 
         <div class="quick-timers" v-if="!isTimerActive">
@@ -68,6 +71,9 @@
         </div>
         <audio src="assets/alarm.mp3" ref="audio"></audio>
     </div>
+    <footer>
+        Made by <a href="https://spaghet.me">tony</a>
+    </footer>
     <script src="script.js">
         /*
         TODO:
