@@ -1,0 +1,16 @@
+{
+        "name": "timer.spaghet.me",
+        "short_name": "timer",
+        "start_url": "index.html",
+        "display": "standalone",
+        "background_color": "#00FF00",
+        "theme_color": "black",
+        "description": "A simple count down timer.",
+        "icons": [
+                {
+                        "src": "assets/Logo.png",
+                        "sizes": "300x300",
+                        "type": "image/png"
+                }
+        ]
+}
