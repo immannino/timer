@@ -33,27 +33,27 @@
 </head>
 <body>
     <div id="app">
-        <nav>
-            <h1>timer</h1>
+        <div v-if="isTimerActive" class="overlay" :style="`height: ${((timerMeta.duration - timerMeta.timeLeft) / timerMeta.duration) * 100
+        }%;`">
+            <div class="time" v-if="timerMeta.prettyTime">{{timerMeta.prettyTime}}</div>
+            <div class="minimal-time-end" v-if="timerMeta.prettyEndTime">Timer Ends at <code>{{timerMeta.prettyEndTime.toLocaleTimeString()}}</code></div>
+            <div class="minimal-actions" v-if="isTimerEnded">
+                <button class="danger" style="background-color: red;" @click="cancel()">STOP</button>
+                <button class="cancel" @click="repeatTimer()">REPEAT</button>
+            </div>
+            <div class="minimal-actions" v-else>
+                <button @click="playPause()">{{timerStateText}}</button>
+                <button class="cancel" @click="cancel()">CANCEL</button>
+            </div>
+        </div>
+        <nav v-if="!isTimerActive">
+            <h1  @click="window.navigation.navigate('/')">timer</h1>
             <a @click="allowSound = !allowSound" class="sound-indicator" title="Toggle if you want sound to play.">
                 <img src="assets/volume-up-solid.svg" alt="Sound Playing indicator" v-if="allowSound">
                 <img src="assets/volume-mute-solid.svg" alt="Sound Playing indicator" v-else>
             </a>
         </nav>
-
-        <div class="timer" v-if="isTimerActive">
-            <div class="time" v-if="timerMeta.prettyTime">{{timerMeta.prettyTime}}</div>
-            <div class="actions" v-if="isTimerEnded">
-                <button class="danger" style="background-color: red;" @click="cancel()">STOP</button>
-                <button class="cancel" @click="repeatTimer()">REPEAT</button>
-            </div>
-            <div class="actions" v-else>
-                <button @click="playPause()">{{timerStateText}}</button>
-                <button class="cancel" @click="cancel()">CANCEL</button>
-            </div>
-            <div class="end-time" v-if="timerMeta.prettyEndTime">Timer Ends at <code>{{timerMeta.prettyEndTime.toLocaleTimeString()}}</code></div>
-        </div>
-        <div class="timer-form" v-else>
+        <div class="timer-form" v-if="!isTimerActive">
             <h3>{{activeForm}}</h3>
             <div class="inputs">
                 <input type="number" ref="hours"   name="Hours"   id="Hours"   placeholder="hh" v-model="form.hours"   @focus="activeForm = 'HOURS'"   @input="formatMaxLength('hours', 2)" maxlength="2" min="0" max="24">
@@ -77,9 +77,9 @@
         <audio src="assets/alarm.mp3" ref="audio"></audio>
     </div>
     <footer>
-        Made by <a href="https://spaghet.me">tony</a> | <a href="/minimal">minimal</a>
+        Made by <a href="https://spaghet.me">tony</a>
     </footer>
-    <script src="script.js">
+    <script src="minimal.js">
         /*
         TODO:
         - Styling
@@ -130,5 +130,53 @@
             }
         }
     </script>
+    <style>
+        .overlay {
+            background: black;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            max-height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 0.5rem;
+            transition: height 0.15s linear;
+        }
+
+        .overlay .time {
+            color: white;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 2rem;
+        }
+        
+        .overlay .minimal-actions {
+            display: flex;
+
+        }
+
+        .overlay .minimal-actions button {
+            background: none;
+            font-family: monospace;
+            color: white;
+        }
+
+        .overlay .minimal-actions .danger {
+            background: none!important;
+            color: red;
+        }
+        .overlay .minimal-actions button:hover {
+            color: yellow;
+            cursor: pointer;
+        }
+
+        .overlay .minimal-time-end  {
+            color: white;
+            font-family: monospace;
+        }
+    </style>
 </body>
 </html>

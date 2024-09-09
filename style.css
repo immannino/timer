@@ -22,6 +22,7 @@ body {
     background-color: var(--background, yellow);
     color: black;
     color: var(--text-color, black);
+    overflow: hidden;
 }
 
 h1 {
@@ -154,6 +155,7 @@ footer {
 .timer .time {
     font-size: 5rem;
     font-weight: bold;
+    font-family: monospace;
 }
 
 .timer .actions {
